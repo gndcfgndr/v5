@@ -136,9 +136,6 @@ elif [ "$res" = "Permission Accepted..." ]; then
 green "Permission Accepted!"
 else
 red "Permission Denied!
-Please Buy AutoScript Premium
-WA: 081391215759
-Telegram: t.me/CRSe7en2nd"
 rm setup.sh > /dev/null 2>&1
 sleep 10
 exit 0
