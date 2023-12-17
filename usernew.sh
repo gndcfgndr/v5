@@ -1,5 +1,4 @@
 #!/bin/bash
-#CRSe7en2nd
 
 BIBlack='\033[1;90m'      # Black
 BIRed='\033[1;91m'        # Red
