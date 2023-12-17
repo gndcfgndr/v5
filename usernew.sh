@@ -36,6 +36,10 @@ export BOLD="\e[1m"
 export WARNING="${RED}\e[5m"
 export UNDERLINE="\e[4m"
 
+ISP=$(cat /etc/xray/isp)
+CITY=$(cat /etc/xray/city)
+domain=$(cat /etc/xray/domain)
+
 BURIQ () {
     curl -sS https://raw.githubusercontent.com/myvpn1/izin/main/ip > /root/tmp
     data=( `cat /root/tmp | grep -E "^### " | awk '{print $2}'` )
@@ -135,43 +139,51 @@ echo -e "$Pass\n$Pass\n"|passwd $Login &> /dev/null
 echo -e "┌─────────────────────────────────────────────────┐" | lolcat
 echo -e "│                   SSH ACCOUNT                   │" | lolcat
 echo -e "└─────────────────────────────────────────────────┘" | lolcat                
-echo -e ""
-echo -e "Username     : $Login"
-echo -e "Password     : $Pass"        
-echo -e "CITY         : $(cat /root/.mycity)"
-echo -e "ISP          : $(cat /root/.myisp)"
-echo -e "Host/IP      : $(cat /etc/xray/domain)"
-echo -e "NSDOMAIN     : $(cat /etc/xray/dns)"
-echo -e "PUBKEY       : $(cat /etc/slowdns/server.pub)"
-echo -e "Slowdns      : 53, 5300"
-echo -e "Udp Custom   : 1-65535"
-echo -e "Port ssl/tls : 443, 441, 445, 777"
-echo -e "Port non tls : 8880, 109, 143, 80"   
-echo -e "OpenSSH      : $opensh"
-echo -e "Dropbear     : $db" 
-echo -e "SSH-WS       : $portsshws" 
-echo -e "SSH WS SSL   : $wsssl" 
-echo -e "SSL/TLS      : $ssl"         
-echo -e "OVPN TCP     : http://$domain:89/tcp.ovpn"
-echo -e "OVPN UDP     : http://$domain:89/udp.ovpn"
-echo -e "BadVpn       : 7300"      
-echo -e ""  
-echo -e "─────────────────────────────────────────────────" | lolcat
-echo -e "Payload WS"
-echo -e "GET / HTTP/1.1[crlf]Host: $domen[crlf]Connection: Keep-Alive[crlf]User-Agent: [ua][crlf]Upgrade: ws[crlf][crlf]"
-echo -e "─────────────────────────────────────────────────" | lolcat
-echo -e "Payload WSS"
-echo -e "GET wss://[host] HTTP/1.1[crlf]Host: bug.com[crlf]Connection: Arz-Alive[crlf]User-Agent: [ua][crlf]Upgrade: ws[crlf][crlf]"
-echo -e "─────────────────────────────────────────────────" | lolcat
-echo -e ""  
-echo -e "─────────────────────────────────────────────────" | lolcat              
-echo -e "      Expired => $exp"
-echo -e "─────────────────────────────────────────────────" | lolcat
-echo -e ""  
-echo -e "┌─────────────────────────────────────────────────┐" | lolcat
-echo -e "│               Andyyuda                │" | lolcat
-echo -e "└─────────────────────────────────────────────────┘" | lolcat
+echo ""
+echo -e "\033[1;93m---------------------------------------------------\033[0m"
+echo -e " SSH OVPN Account    "
+echo -e "\033[1;93m---------------------------------------------------\033[0m"
+echo -e "Username         : $Login"
+echo -e "Password         : $Pass"
+#echo -e "Limit Quota      : $Quota GB"
+echo -e "Limit Ip         : ${iplimit} User"
+echo -e "Host             : $domain"
+#echo -e "Host Slowdns     : ${NS}"
+#echo -e "Pub Key          : ${PUB}"
+echo -e "Location         : $CITY"
+echo -e "ISP              : $ISP"
+echo -e "Port OpenSSH     : 443, 80, 22"
+#echo -e "Port DNS         : 443, 53 ,22 "
+echo -e "Port SSH UDP     : 1-65535"
+echo -e "Port Dropbear    : 443, 109 ,143"
+echo -e "Port SSH WS      : 80,8080,8880,2086,2095"
+echo -e "Port SSH SSL WS  : 443"
+echo -e "Port SSL/TLS     : 443"
+echo -e "Port OVPN WS SSL : 443"
+echo -e "Port OVPN SSL    : 443"
+echo -e "Port OVPN TCP    : 443, 1194"
+echo -e "Port OVPN UDP    : 2200"
+echo -e "BadVPN UDP       : 7100, 7300, 7300"
+echo -e "\033[1;93m---------------------------------------------------\033[0m"
+echo -e " Port 80 : $domain:80@$Login:$Pass"
+echo -e " Port 443 : $domain:443@$Login:$Pass"
+echo -e " Udp Custom : $domain:1-65535@$Login:$Pass"
+echo -e "\033[1;93m---------------------------------------------------\033[0m"
+echo -e "Payload      : GET / HTTP/1.1[crlf]Host: [host][crlf]Connection: Upgrade[crlf]User-Agent: [ua][crlf]Upgrade: websocket[crlf][crlf]"
+echo -e "\033[1;93m---------------------------------------------------\033[0m"
+echo -e "OVPN Download    : https://$domain:81/"
+echo -e "\033[1;93m---------------------------------------------------\033[0m"
+echo -e "Save Link Account: https://$domain:81/ssh-$Login.txt"
+echo -e "\033[1;93m---------------------------------------------------\033[0m"
+echo -e "Aktif Selama     : $masaaktif Hari"
+echo -e "Dibuat Pada      : $tnggl"
+echo -e "Berakhir Pada    : $expe"
+echo -e "----------------------------------------------------------------------"
+echo -e "       Terima Kasih Telah Menggunakan     "
+echo -e "            Premium Script                      "
+echo -e "       Andyyuda Tunneling             "
+echo -e "----------------------------------------------------------------------"
             
 echo -e ""
 read -n 1 -s -r -p "Press any key to back on menu"
-funny
+menu
