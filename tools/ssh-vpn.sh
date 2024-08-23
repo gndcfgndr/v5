@@ -471,15 +471,36 @@ echo -e "[ ${green}INFO$NC ] Install successfully..."
 
 # install fail2ban
 
-# Banner /etc/issue.net
-rm -fr /etc/issue.net
-rm -fr /etc/issue.net.save
+echo -e "[ ${green}INFO$NC ] Menginstall Fail2ban"
 sleep 1
-echo -e "[ ${green}INFO$NC ] Settings banner"
+
+# Update dan install Fail2ban
+apt update -y > /dev/null 2>&1
+apt -y install fail2ban > /dev/null 2>&1
+
+echo -e "[ ${green}INFO$NC ] Mengatur banner"
+
+# Hapus banner lama
+rm -f /etc/issue.net
+rm -f /etc/issue.net.save
+
+# Unduh banner baru
 wget -q -O /etc/issue.net "https://raw.githubusercontent.com/myvpn1/v5/main/issue.net"
 chmod +x /etc/issue.net
-echo "Banner /etc/issue.net" >> /etc/ssh/sshd_config
+
+# Tambahkan banner ke sshd_config
+if ! grep -q "Banner /etc/issue.net" /etc/ssh/sshd_config; then
+    echo "Banner /etc/issue.net" >> /etc/ssh/sshd_config
+fi
+
+# Konfigurasi Dropbear
 sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
+
+# Restart layanan untuk menerapkan perubahan
+systemctl restart ssh > /dev/null 2>&1
+systemctl restart dropbear > /dev/null 2>&1
+
+echo -e "[ ${green}INFO$NC ] Fail2ban dan banner berhasil diinstal dan dikonfigurasi."
 
 # Blokir Torrent
 echo -e "[ ${green}INFO$NC ] Set iptables"
